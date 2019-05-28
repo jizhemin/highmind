@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/element-ui@2.7.2/lib/theme-chalk/index.css">
+    <link rel="stylesheet"
+          href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <link rel="stylesheet" href="../resource/table/css/demo_table.css">
+    <link rel="stylesheet" href="../resource/css/bootstrap-fileupload.css">
+    <link rel="stylesheet" href="../resource/css/main.css">
+    <link rel="stylesheet" href="../resource/css/public.css">
+
+    <title>票务基础资料管理</title>
+</head>
+<body>
+
+<div id="wrapper">
+
+    <!-- NAVBAR -->
+    <div class="navHeader"></div>
+    <!-- END NAVBAR -->
+
+    <!-- MAIN -->
+    <div class="main">
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- TABLE STRIPED -->
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">旅行社信息管理</h3>
+                            </div>
+                            <div class="panel-body">
+                                <p>
+                                    <button type="button" class="btn btn-primary"
+                                            data-toggle="modal" data-target="#addagency">
+                                        <i class="fa fa-user-plus"></i>&nbsp;添加旅行社
+                                    </button>
+                                </p>
+                                <div class="table-content">
+                                    <table class="table table-striped table-bordered table-hover"
+                                           id="agencyTable"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END TABLE STRIPED -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END MAIN -->
+</div>
+<!--售票员管理-->
+<div class="modal fade " id="employeeinfo" tabindex="-1"
+           role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+           style="display: none;">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">已添加售票员信息</h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                <button type="button" class="btn btn-primary"
+                        data-toggle="modal" data-target="#employeelist">
+                    <i class="fa fa-user-plus"></i>&nbsp;添加售票员
+                </button>
+            </p>
+            <div class="table-content">
+                <table class="table table-striped table-bordered table-hover"
+                       id="agencyemployeeTable"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--票类管理-->
+<div class="modal fade " id="ticketinfo" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">已添加票类信息</h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                <button type="button" class="btn btn-primary"
+                        data-toggle="modal" data-target="#ticketlist">
+                    <i class="fa fa-user-plus"></i>&nbsp;添加票类
+                </button>
+            </p>
+            <div class="table-content">
+                <table class="table table-striped table-bordered table-hover"
+                       id="agencyticketTable"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加旅行社-->
+<div class="modal fade " id="addagency" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加旅行社</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled activity-timeline">
+                    <li><i class="fa fa-comment activity-icon"></i>
+                        <p>旅行社信息<span class="timestamp">Agency Information</span></p>
+                    </li>
+                </ul>
+
+                <div class="form-horizontal tasi-form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>旅行社编码</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入旅行社编码"
+                                   name="agencycode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>旅行社名称</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入旅行社名称"
+                                   name="agencyname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">旅行社简称</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入旅行社简称"
+                                   name="shotname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">联系人</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="联系人"
+                                   name="person">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">联系电话</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="联系电话"
+                                   name="phone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">旅行社地址</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入旅行社地址"
+                                   name="address">
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="fancy-checkbox"> <input type="checkbox" onchange="$('#').toggle()"
+                                                              name="isenabled"> <span>账号是否启用</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer" style="text-align: right;">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button"
+                    id="createAgencyBtn">确认添加
+            </button>
+
+        </div>
+    </div>
+</div>
+<!--//售票员列表-->
+<div class="modal fade " id="employeelist" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加售票员</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled activity-timeline">
+                    <li><i class="fa fa-comment activity-icon"></i>
+                        <p>选择售票员<span class="timestamp">Employee Information</span></p>
+                    </li>
+                </ul>
+                <div class="table-content">
+                    <table class="table table-striped table-bordered table-hover"
+                           id="employeeTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--添加售票员-->
+<div class="modal fade " id="addemployee" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加售票员</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled activity-timeline">
+                    <li><i class="fa fa-comment activity-icon"></i>
+                        <p>售票员信息<span class="timestamp">Employee Information</span></p>
+                    </li>
+                </ul>
+
+                    <div class="col-sm-9">
+                        <label class="fancy-checkbox"> <input type="checkbox" onchange="$('#').toggle()"
+                                                              name="isenabled"> <span>账号是否启用</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer" style="text-align: right;">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button"
+                    id="creatEmployeeBtn">确认添加
+            </button>
+
+        </div>
+    </div>
+<!--添加票类-->
+<div class="modal fade " id="addticket" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加售票员</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled activity-timeline">
+                    <li><i class="fa fa-comment activity-icon"></i>
+                        <p>售票员信息<span class="timestamp">Employee Information</span></p>
+                    </li>
+                </ul>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">协议价</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" placeholder="请输入协议价"
+                               name="address">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <label class="fancy-checkbox"> <input type="checkbox" onchange="$('#').toggle()"
+                                                          name="isenabled"> <span>账号是否启用</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer" style="text-align: right;">
+        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+        <button class="btn btn-success" type="button"
+                id="creatTicketBtn">确认添加
+        </button>
+
+    </div>
+</div>
+</div>
+<!--票类列表-->
+<div class="modal fade " id="ticketlist" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">票类信息</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled activity-timeline">
+                    <li><i class="fa fa-comment activity-icon"></i>
+                        <p>选择票类</p>
+                    </li>
+                </ul>
+
+                <div class="table-content">
+                    <table class="table table-striped table-bordered table-hover"
+                           id="ticketTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑旅行社 -->
+<div class="modal fade " id="agencyEdit" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">修改旅行社信息</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal tasi-form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>旅行社编码</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入旅行社编码"
+                                   name="agencycodeEdit">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>旅行社名称</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入旅行社名称"
+                                   name="agencynameEdit">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>旅行社简称</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入旅行社简称"
+                                   name="agencyshotnameEdit">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>联系人</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="联系人"
+                                   name="agencypersonEdit">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>联系电话</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="联系电话"
+                                   name="agencyphoneEdit">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>旅行社地址</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入旅行社地址"
+                                   name="agencyaddressEdit">
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="fancy-checkbox"> <input type="checkbox" onchange="$('#').toggle()"
+                                                              name="isEnabledEdit"> <span>账号是否启用</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer" style="text-align: right;">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button"
+                    id="editAgencyBtn">保存修改
+            </button>
+        </div>
+    </div>
+</div>
+<!-- 编辑售票员 -->
+<div class="modal fade " id="employeeEdit" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">启用或禁用售票员</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal tasi-form">
+
+                    <div class="col-sm-9">
+                        <label class="fancy-checkbox"> <input type="checkbox" onchange="$('#').toggle()"
+                                                              name="isEnabledEdit"> <span>账号是否启用</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer" style="text-align: right;">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button"
+                    id="editEmployeeBtn">保存修改
+            </button>
+        </div>
+    </div>
+</div>
+<!-- 编辑票类 -->
+<div class="modal fade " id="ticketEdit" tabindex="-1"
+     role="dialog" aria-labelledby="agencyAddLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">编辑信息</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal tasi-form">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span
+                                style="color: red;">*</span>协议价</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入新的协议价"
+                                   name="priceEdit">
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="fancy-checkbox"> <input type="checkbox" onchange="$('#').toggle()"
+                                                              name="isEnabledEdit"> <span>票类是否启用</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer" style="text-align: right;">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button"
+                    id="editTicketBtn">保存修改
+            </button>
+        </div>
+    </div>
+</div>
+<!-- 旅行社信息查看 -->
+<div class="modal fade " id="agencyInfo" tabindex="-1" role="dialog"
+     aria-labelledby="spotInfoLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">旅行社信息查看</h3>
+                <div class="right">
+                    <button type="button" class="btn-remove" data-dismiss="modal"
+                            aria-hidden="true">
+                        <i class="lnr lnr-cross"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade active in">
+                        <div class="profile-detail" id="agencyInfo_detail"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" style="text-align: right;">
+                <button data-dismiss="modal" class="btn btn-success" type="button" id="">确&emsp;定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Javascript -->
+<script src="../resource/js/jquery-3.2.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 开发环境版本  -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+<!-- 生产环境版本 -->
+<script src="https://unpkg.com/element-ui@2.7.2/lib/index.js"></script>
+<script src="../resource/js/jquery.dataTables.min.js"></script>
+<script src="../resource/js/bootstrap-fileupload.js"></script>
+<script src="../resource/js/public.js"></script>
+<script src="../js/agency.js?v=11"></script>
+</body>
+</html>

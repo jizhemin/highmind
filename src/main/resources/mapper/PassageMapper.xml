@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.PassageMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.Passage">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="spot_id" jdbcType="BIGINT" property="spot_id" />
+    <result column="passagecode" jdbcType="NVARCHAR" property="passagecode" />
+    <result column="passagename" jdbcType="NVARCHAR" property="passagename" />
+    <result column="ip" jdbcType="NVARCHAR" property="ip" />
+    <result column="io" jdbcType="SMALLINT" property="io" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="passagetype" jdbcType="NVARCHAR" property="passagetype" />
+    <result column="employee_id" jdbcType="BIGINT" property="employee_id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, domainid, spot_id, passagecode, passagename, ip, io, enabled, passagetype, employee_id
+  </sql>
+  <select id="selectPassage" parameterType="Map" resultMap="BaseResultMap">
+    select
+    
+    <include refid="Base_Column_List" />
+    from DYNA_Equ_Passage
+    
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Equ_Passage
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Equ_Passage
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Passage" useGeneratedKeys="true">
+    insert into DYNA_Equ_Passage (domainid, spot_id, passagecode, 
+      passagename, ip, io, 
+      enabled, passagetype, employee_id
+      )
+    values (#{domainid,jdbcType=INTEGER}, #{spot_id,jdbcType=BIGINT}, #{passagecode,jdbcType=NVARCHAR}, 
+      #{passagename,jdbcType=NVARCHAR}, #{ip,jdbcType=NVARCHAR}, #{io,jdbcType=SMALLINT}, 
+      #{enabled,jdbcType=BIT}, #{passagetype,jdbcType=NVARCHAR}, #{employee_id,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Passage" useGeneratedKeys="true">
+    insert into DYNA_Equ_Passage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="spot_id != null">
+        spot_id,
+      </if>
+      <if test="passagecode != null">
+        passagecode,
+      </if>
+      <if test="passagename != null">
+        passagename,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="io != null">
+        io,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+      <if test="passagetype != null">
+        passagetype,
+      </if>
+      <if test="employee_id != null">
+        employee_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="spot_id != null">
+        #{spot_id,jdbcType=BIGINT},
+      </if>
+      <if test="passagecode != null">
+        #{passagecode,jdbcType=NVARCHAR},
+      </if>
+      <if test="passagename != null">
+        #{passagename,jdbcType=NVARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=NVARCHAR},
+      </if>
+      <if test="io != null">
+        #{io,jdbcType=SMALLINT},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="passagetype != null">
+        #{passagetype,jdbcType=NVARCHAR},
+      </if>
+      <if test="employee_id != null">
+        #{employee_id,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.Passage">
+    update DYNA_Equ_Passage
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="spot_id != null">
+        spot_id = #{spot_id,jdbcType=BIGINT},
+      </if>
+      <if test="passagecode != null">
+        passagecode = #{passagecode,jdbcType=NVARCHAR},
+      </if>
+      <if test="passagename != null">
+        passagename = #{passagename,jdbcType=NVARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=NVARCHAR},
+      </if>
+      <if test="io != null">
+        io = #{io,jdbcType=SMALLINT},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="passagetype != null">
+        passagetype = #{passagetype,jdbcType=NVARCHAR},
+      </if>
+      <if test="employee_id != null">
+        employee_id = #{employee_id,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.Passage">
+    update DYNA_Equ_Passage
+    set domainid = #{domainid,jdbcType=INTEGER},
+      spot_id = #{spot_id,jdbcType=BIGINT},
+      passagecode = #{passagecode,jdbcType=NVARCHAR},
+      passagename = #{passagename,jdbcType=NVARCHAR},
+      ip = #{ip,jdbcType=NVARCHAR},
+      io = #{io,jdbcType=SMALLINT},
+      enabled = #{enabled,jdbcType=BIT},
+      passagetype = #{passagetype,jdbcType=NVARCHAR},
+      employee_id = #{employee_id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

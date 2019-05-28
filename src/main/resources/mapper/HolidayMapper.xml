@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.HolidayMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.Holiday">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="holidayname" jdbcType="NVARCHAR" property="holidayname" />
+    <result column="holidaydate" jdbcType="DATE" property="holidaydate" />
+    <result column="remark" jdbcType="NVARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, domainid, holidayname, holidaydate, remark
+  </sql>
+  <select id="selectHolidays" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Holiday
+    <if test="domainid!=null">
+        where domainid = #{domainid,jdbcType=BIGINT}
+    </if>
+    order by holidaydate;
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Holiday
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Holiday
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByDate" parameterType="String">
+    delete from DYNA_Tms_Holiday
+    where holidaydate = #{date,jdbcType=DATE}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Holiday" useGeneratedKeys="true">
+    insert into DYNA_Tms_Holiday (domainid, holidayname, holidaydate, 
+      remark)
+    values (#{domainid,jdbcType=INTEGER}, #{holidayname,jdbcType=NVARCHAR}, #{holidaydate,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Holiday" useGeneratedKeys="true">
+    insert into DYNA_Tms_Holiday
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="holidayname != null">
+        holidayname,
+      </if>
+      <if test="holidaydate != null">
+        holidaydate,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="holidayname != null">
+        #{holidayname,jdbcType=NVARCHAR},
+      </if>
+      <if test="holidaydate != null">
+        #{holidaydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.Holiday">
+    update DYNA_Tms_Holiday
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="holidayname != null">
+        holidayname = #{holidayname,jdbcType=NVARCHAR},
+      </if>
+      <if test="holidaydate != null">
+        holidaydate = #{holidaydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.Holiday">
+    update DYNA_Tms_Holiday
+    set domainid = #{domainid,jdbcType=INTEGER},
+      holidayname = #{holidayname,jdbcType=NVARCHAR},
+      holidaydate = #{holidaydate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=NVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

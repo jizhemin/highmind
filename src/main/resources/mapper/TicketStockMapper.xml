@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.TicketStockMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.TicketStock">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="stockname" jdbcType="NVARCHAR" property="stockname" />
+    <result column="daystock" jdbcType="INTEGER" property="daystock" />
+    <result column="remark" jdbcType="NVARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, domainid, stockname, daystock, remark
+  </sql>
+  <select id="selectTicketStock" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_TicketStock
+     <where>
+    	<if test="id!=null">
+    		DYNA_Tms_TicketStock.id = #{id,jdbcType=BIGINT}
+    	</if>
+    	<if test="domainid!=nill">
+    		DYNA_Tms_TicketStock.domainid = #{domainid,jdbcType=INTEGER}
+    	</if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_TicketStock
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Tms_TicketStock
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.TicketStock" useGeneratedKeys="true">
+    insert into DYNA_Tms_TicketStock (domainid, stockname, daystock, 
+      remark)
+    values (#{domainid,jdbcType=INTEGER}, #{stockname,jdbcType=NVARCHAR}, #{daystock,jdbcType=INTEGER}, 
+      #{remark,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.TicketStock" useGeneratedKeys="true">
+    insert into DYNA_Tms_TicketStock
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="stockname != null">
+        stockname,
+      </if>
+      <if test="daystock != null">
+        daystock,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="stockname != null">
+        #{stockname,jdbcType=NVARCHAR},
+      </if>
+      <if test="daystock != null">
+        #{daystock,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.TicketStock">
+    update DYNA_Tms_TicketStock
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="stockname != null">
+        stockname = #{stockname,jdbcType=NVARCHAR},
+      </if>
+      <if test="daystock != null">
+        daystock = #{daystock,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.TicketStock">
+    update DYNA_Tms_TicketStock
+    set domainid = #{domainid,jdbcType=INTEGER},
+      stockname = #{stockname,jdbcType=NVARCHAR},
+      daystock = #{daystock,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=NVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

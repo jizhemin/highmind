@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.AreaMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.Area">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="areaname" jdbcType="NVARCHAR" property="areaname" />
+    <result column="arearemark" jdbcType="NVARCHAR" property="arearemark" />
+    <result column="serial" jdbcType="INTEGER" property="serial" />
+    <collection property="spots" ofType="com.highmind_Tms.entity.Spot">
+    	<id column="Sid" jdbcType="BIGINT" property="id" />
+    	<result column="Sdomainid" jdbcType="INTEGER" property="domainid" />
+    	<result column="Sspotname" jdbcType="NVARCHAR" property="spotname" />
+    	<result column="Sspotremark" jdbcType="NVARCHAR" property="spotremark" />
+    	<result column="Slimited" jdbcType="BIT" property="limited" />
+    	<result column="Sqty" jdbcType="INTEGER" property="qty" />
+    	<result column="Sautoleavetime" jdbcType="INTEGER" property="autoleavetime" />
+    	<result column="Sautoleave" jdbcType="BINARY" property="autoleave" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    DYNA_Tms_Area.id, DYNA_Tms_Area.domainid, DYNA_Tms_Area.areaname, DYNA_Tms_Area.arearemark, DYNA_Tms_Area.serial
+  </sql>
+  <sql id="Spot_Base_Column_List">
+    DYNA_Tms_Spot.id as Sid, DYNA_Tms_Spot.domainid as Sdomainid, DYNA_Tms_Spot.spotname as Sspotname, DYNA_Tms_Spot.spotremark as Sspotremark,
+    DYNA_Tms_Spot.limited as Slimited, DYNA_Tms_Spot.qty as Sqty,
+    DYNA_Tms_Spot.autoleavetime as Sautoleavetime, DYNA_Tms_Spot.autoleave as Sautoleave
+  </sql>
+  <select id="selectArea" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Spot_Base_Column_List"/>
+    from DYNA_Tms_Area Left JOIN  DYNA_Tms_Area_Spot ON DYNA_Tms_Area_Spot.area_id=DYNA_Tms_Area.id
+    Left join DYNA_Tms_Spot on DYNA_Tms_Spot.id=DYNA_Tms_Area_Spot.spot_id
+    <where>
+    	<if test="id!=null">
+    		DYNA_Tms_Area.id=#{id}
+    	</if>
+    	<if test="domainId!=null">
+    		DYNA_Tms_Area.domainId=#{domainId,jdbcType=BIGINT}
+    	</if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Area
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Area
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Area" useGeneratedKeys="true">
+    insert into DYNA_Tms_Area (domainid, areaname, arearemark, 
+      serial)
+    values (#{domainid,jdbcType=INTEGER}, #{areaname,jdbcType=NVARCHAR}, #{arearemark,jdbcType=NVARCHAR}, 
+      #{serial,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Area" useGeneratedKeys="true">
+    insert into DYNA_Tms_Area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="areaname != null">
+        areaname,
+      </if>
+      <if test="arearemark != null">
+        arearemark,
+      </if>
+      <if test="serial != null">
+        serial,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="areaname != null">
+        #{areaname,jdbcType=NVARCHAR},
+      </if>
+      <if test="arearemark != null">
+        #{arearemark,jdbcType=NVARCHAR},
+      </if>
+      <if test="serial != null">
+        #{serial,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.Area">
+    update DYNA_Tms_Area
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="areaname != null">
+        areaname = #{areaname,jdbcType=NVARCHAR},
+      </if>
+      <if test="arearemark != null">
+        arearemark = #{arearemark,jdbcType=NVARCHAR},
+      </if>
+      <if test="serial != null">
+        serial = #{serial,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.Area">
+    update DYNA_Tms_Area
+    set domainid = #{domainid,jdbcType=INTEGER},
+      areaname = #{areaname,jdbcType=NVARCHAR},
+      arearemark = #{arearemark,jdbcType=NVARCHAR},
+      serial = #{serial,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

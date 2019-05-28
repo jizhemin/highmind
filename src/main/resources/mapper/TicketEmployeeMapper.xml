@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.TicketEmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.TicketEmployee">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="employee_id" jdbcType="BIGINT" property="employee_id" />
+    <result column="ticket_id" jdbcType="BIGINT" property="ticket_id" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, domainid, employee_id, ticket_id, price
+  </sql>
+  <select id="selectTicketEmployee" parameterType="Map" resultMap="BaseResultMap">
+    select
+    
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Ticket_Employee
+    <where>
+    	<if test="domainid!=null">
+    		and DYNA_Tms_Ticket_Employee.domainid=#{domainid,jdbcType=BIGINT}
+    	</if>
+    	<if test="eId!=null">
+    		and DYNA_Tms_Ticket_Employee.employee_id=#{eId,jdbcType=BIGINT}
+    	</if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Ticket_Employee
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Ticket_Employee
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByEid" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Ticket_Employee
+    where employee_id = #{eId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.TicketEmployee" useGeneratedKeys="true">
+    insert into DYNA_Tms_Ticket_Employee (domainid, employee_id, ticket_id, 
+      price)
+    values (#{domainid,jdbcType=INTEGER}, #{employee_id,jdbcType=BIGINT}, #{ticket_id,jdbcType=BIGINT}, 
+      #{price,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.TicketEmployee" useGeneratedKeys="true">
+    insert into DYNA_Tms_Ticket_Employee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="employee_id != null">
+        employee_id,
+      </if>
+      <if test="ticket_id != null">
+        ticket_id,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="employee_id != null">
+        #{employee_id,jdbcType=BIGINT},
+      </if>
+      <if test="ticket_id != null">
+        #{ticket_id,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.TicketEmployee">
+    update DYNA_Tms_Ticket_Employee
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="employee_id != null">
+        employee_id = #{employee_id,jdbcType=BIGINT},
+      </if>
+      <if test="ticket_id != null">
+        ticket_id = #{ticket_id,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.TicketEmployee">
+    update DYNA_Tms_Ticket_Employee
+    set domainid = #{domainid,jdbcType=INTEGER},
+      employee_id = #{employee_id,jdbcType=BIGINT},
+      ticket_id = #{ticket_id,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

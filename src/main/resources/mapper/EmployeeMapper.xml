@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.Employee">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="department_id" jdbcType="BIGINT" property="department_id" />
+    <result column="loginId" jdbcType="VARCHAR" property="loginId" />
+    <result column="isLoginEnabled" jdbcType="TINYINT" property="isLoginEnabled" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="sex" jdbcType="BIGINT" property="sex" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="tel" jdbcType="VARCHAR" property="tel"/>
+    <association property="employeeSet" javaType="com.highmind_Tms.entity.EmployeeSet">
+    	<id column="ESid" jdbcType="BIGINT" property="id" />
+	    <result column="ESdomainid" jdbcType="INTEGER" property="domainid" />
+	    <result column="ESifprintprice" jdbcType="BIT" property="ifprintprice" />
+	    <result column="ESteamprint" jdbcType="NVARCHAR" property="teamprint" />
+	    <result column="ESpersonprint" jdbcType="NVARCHAR" property="personprint" />
+	    <result column="ESemployee_id" jdbcType="BIGINT" property="employee_id" />
+    </association>
+    <collection property="tickets" ofType="com.highmind_Tms.entity.Ticket">
+    	<id column="Tid" jdbcType="BIGINT" property="id" />
+	    <result column="Tdomainid" jdbcType="INTEGER" property="domainid" />
+	    <result column="Ttype_id" jdbcType="BIGINT" property="type_id" />
+	    <result column="Tarea_id" jdbcType="BIGINT" property="area_id" />
+	    <result column="Tticketcode" jdbcType="NVARCHAR" property="ticketcode" />
+	    <result column="Tticketname" jdbcType="NVARCHAR" property="ticketname" />
+	    <result column="Tticketprice" jdbcType="DECIMAL" property="ticketprice" />
+	    <result column="Tticketclass" jdbcType="NVARCHAR" property="ticketclass" />
+	    <result column="Teffectiveday" jdbcType="INTEGER" property="effectiveday" />
+	    <result column="Tstime" jdbcType="TIME" property="stime" />
+	    <result column="Tetime" jdbcType="TIME" property="etime" />
+	    <result column="Tsdate" jdbcType="TIMESTAMP" property="sdate" />
+	    <result column="Tedate" jdbcType="TIMESTAMP" property="edate" />
+	    <result column="Tday" jdbcType="NVARCHAR" property="day" />
+	    <result column="Tholiday" jdbcType="NVARCHAR" property="holiday" />
+	    <result column="Tserial" jdbcType="INTEGER" property="serial" />
+	    <result column="Tenabled" jdbcType="BIT" property="enabled" />
+	    <result column="Tisstock" jdbcType="BIT" property="isstock" />
+	    <result column="Tstock_id" jdbcType="BIGINT" property="stock_id" />
+	    <association property="ticketStock" javaType="com.highmind_Tms.entity.TicketStock" select="com.highmind_Tms.dao.TicketStockMapper.selectByPrimaryKey" column="Tstock_id">
+        </association>
+        <association property="ticketType" javaType="com.highmind_Tms.entity.TicketType" select="com.highmind_Tms.dao.TicketTypeMapper.selectByPrimaryKey" column="Ttype_id">
+        </association>
+        <association property="area" javaType="com.highmind_Tms.entity.Area" select="com.highmind_Tms.dao.AreaMapper.selectByPrimaryKey" column="Tarea_id">
+        </association> 
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    Sys_Employee.id , Sys_Employee.domainid, Sys_Employee.name, email, department_id, loginId, isLoginEnabled, birthday, seller, 
+    qq, sex, photo, password,Sys_Employee.tel
+  </sql>
+  <sql id="EmployeeSet_Column_List">
+    DYNA_Sys_EmployeeSet.id as ESid, DYNA_Sys_EmployeeSet.domainid as ESdomainid, DYNA_Sys_EmployeeSet.ifprintprice as ESifprintprice,
+     DYNA_Sys_EmployeeSet.teamprint as ESteamprint, DYNA_Sys_EmployeeSet.personprint as ESpersonprint, DYNA_Sys_EmployeeSet.employee_id as ESemployee_id
+  </sql>
+  <sql id="Ticket_Column_List">
+    DYNA_Tms_Ticket.id as Tid, DYNA_Tms_Ticket.domainid as Tdomainid, DYNA_Tms_Ticket.type_id as Ttype_id, DYNA_Tms_Ticket.area_id as Tarea_id, 
+    DYNA_Tms_Ticket.ticketcode as Tticketcode, DYNA_Tms_Ticket.ticketname as Tticketname, DYNA_Tms_Ticket.ticketprice as Tticketprice, DYNA_Tms_Ticket.ticketclass as Tticketclass, 
+    DYNA_Tms_Ticket.effectiveday as Teffectiveday, DYNA_Tms_Ticket.stime as Tstime, DYNA_Tms_Ticket.etime as Tetime, DYNA_Tms_Ticket.sdate as Tsdate, DYNA_Tms_Ticket.edate as Tedate,
+    DYNA_Tms_Ticket.day as Tday, DYNA_Tms_Ticket.holiday as Tholiday, DYNA_Tms_Ticket.serial as Tserial, DYNA_Tms_Ticket.enabled as Tenabled,
+    DYNA_Tms_Ticket.isstock as Tisstock,  DYNA_Tms_Ticket.stock_id as Tstock_id
+  </sql>
+  <select id="selectSellers" parameterType="Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Ticket_Column_List" />
+    ,
+    <include refid="EmployeeSet_Column_List" />
+    from Sys_Employee Left JOIN DYNA_Tms_Ticket_Employee
+    on DYNA_Tms_Ticket_Employee.employee_id=Sys_Employee.id
+    Left JOIN DYNA_Tms_Ticket 
+    on DYNA_Tms_Ticket.id=DYNA_Tms_Ticket_Employee.ticket_id
+    LEFT JOIN DYNA_Sys_EmployeeSet
+    on  DYNA_Sys_EmployeeSet.employee_id=Sys_Employee.id
+    <where>
+    	<if test="domainid!=null">
+    		and Sys_Employee.domainid=#{domainid,jdbcType=BIGINT} and Sys_Employee.seller=1
+    	</if>
+    	<if test="id!=null">
+    		and Sys_Employee.id=#{id,,jdbcType=BIGINT}
+    	</if>
+    </where>
+  </select>
+ 
+</mapper>

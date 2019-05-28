@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.PassageRecordMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.PassageRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="FM_CreateTime" jdbcType="TIMESTAMP" property="FM_CreateTime" />
+    <result column="passage_id" jdbcType="BIGINT" property="passage_id" />
+    <result column="permit_type" jdbcType="NVARCHAR" property="permit_type" />
+    <result column="permit_value" jdbcType="NVARCHAR" property="permit_value" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, domainid, FM_CreateTime, passage_id, permit_type, permit_value
+  </sql>
+  <select id="selectPassageRecord" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from DYNA_Equ_PassageRecord
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Equ_PassageRecord
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Equ_PassageRecord
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.PassageRecord" useGeneratedKeys="true">
+    insert into DYNA_Equ_PassageRecord (domainid, FM_CreateTime, passage_id, 
+      permit_type, permit_value)
+    values (#{domainid,jdbcType=INTEGER}, #{FM_CreateTime,jdbcType=TIMESTAMP}, #{passage_id,jdbcType=BIGINT}, 
+      #{permit_type,jdbcType=NVARCHAR}, #{permit_value,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.PassageRecord" useGeneratedKeys="true">
+    insert into DYNA_Equ_PassageRecord
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="FM_CreateTime != null">
+        FM_CreateTime,
+      </if>
+      <if test="passage_id != null">
+        passage_id,
+      </if>
+      <if test="permit_type != null">
+        permit_type,
+      </if>
+      <if test="permit_value != null">
+        permit_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="FM_CreateTime != null">
+        #{FM_CreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passage_id != null">
+        #{passage_id,jdbcType=BIGINT},
+      </if>
+      <if test="permit_type != null">
+        #{permit_type,jdbcType=NVARCHAR},
+      </if>
+      <if test="permit_value != null">
+        #{permit_value,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.PassageRecord">
+    update DYNA_Equ_PassageRecord
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="FM_CreateTime != null">
+        FM_CreateTime = #{FM_CreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passage_id != null">
+        passage_id = #{passage_id,jdbcType=BIGINT},
+      </if>
+      <if test="permit_type != null">
+        permit_type = #{permit_type,jdbcType=NVARCHAR},
+      </if>
+      <if test="permit_value != null">
+        permit_value = #{permit_value,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.PassageRecord">
+    update DYNA_Equ_PassageRecord
+    set domainid = #{domainid,jdbcType=INTEGER},
+      FM_CreateTime = #{FM_CreateTime,jdbcType=TIMESTAMP},
+      passage_id = #{passage_id,jdbcType=BIGINT},
+      permit_type = #{permit_type,jdbcType=NVARCHAR},
+      permit_value = #{permit_value,jdbcType=NVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

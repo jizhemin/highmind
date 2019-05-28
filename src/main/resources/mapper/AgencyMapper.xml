@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.AgencyMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.Agency">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="agencycode" jdbcType="NVARCHAR" property="agencycode" />
+    <result column="agencyname" jdbcType="NVARCHAR" property="agencyname" />
+    <result column="shotname" jdbcType="NVARCHAR" property="shotname" />
+    <result column="person" jdbcType="NVARCHAR" property="person" />
+    <result column="phone" jdbcType="NVARCHAR" property="phone" />
+    <result column="address" jdbcType="NVARCHAR" property="address" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DYNA_Tms_Agency.id, DYNA_Tms_Agency.domainid, DYNA_Tms_Agency.agencycode, DYNA_Tms_Agency.agencyname,
+    DYNA_Tms_Agency.shotname, DYNA_Tms_Agency.person, DYNA_Tms_Agency.phone, DYNA_Tms_Agency.address,
+    DYNA_Tms_Agency.enabled
+  </sql>
+
+  <select id="listagency" resultType="Agency">
+    select
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Agency
+  </select>
+
+  <select id="getAgencyById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Agency
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="delAgencyById" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Agency
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="addAgency" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Agency" useGeneratedKeys="true">
+    insert into DYNA_Tms_Agency (domainid, agencycode, agencyname, 
+      shotname, person, phone, 
+      address, enabled)
+    values (#{domainid,jdbcType=INTEGER}, #{agencycode,jdbcType=NVARCHAR}, #{agencyname,jdbcType=NVARCHAR}, 
+      #{shotname,jdbcType=NVARCHAR}, #{person,jdbcType=NVARCHAR}, #{phone,jdbcType=NVARCHAR}, 
+      #{address,jdbcType=NVARCHAR}, #{enabled,jdbcType=BIT})
+  </insert>
+
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Agency" useGeneratedKeys="true">
+    insert into DYNA_Tms_Agency
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="agencycode != null">
+        agencycode,
+      </if>
+      <if test="agencyname != null">
+        agencyname,
+      </if>
+      <if test="shotname != null">
+        shotname,
+      </if>
+      <if test="person != null">
+        person,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="agencycode != null">
+        #{agencycode,jdbcType=NVARCHAR},
+      </if>
+      <if test="agencyname != null">
+        #{agencyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="shotname != null">
+        #{shotname,jdbcType=NVARCHAR},
+      </if>
+      <if test="person != null">
+        #{person,jdbcType=NVARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=NVARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=NVARCHAR},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.Agency">
+    update DYNA_Tms_Agency
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="agencycode != null">
+        agencycode = #{agencycode,jdbcType=NVARCHAR},
+      </if>
+      <if test="agencyname != null">
+        agencyname = #{agencyname,jdbcType=NVARCHAR},
+      </if>
+      <if test="shotname != null">
+        shotname = #{shotname,jdbcType=NVARCHAR},
+      </if>
+      <if test="person != null">
+        person = #{person,jdbcType=NVARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=NVARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=NVARCHAR},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="editAgency" parameterType="com.highmind_Tms.entity.Agency">
+    update DYNA_Tms_Agency
+    set domainid = #{domainid,jdbcType=INTEGER},
+      agencycode = #{agencycode,jdbcType=NVARCHAR},
+      agencyname = #{agencyname,jdbcType=NVARCHAR},
+      shotname = #{shotname,jdbcType=NVARCHAR},
+      person = #{person,jdbcType=NVARCHAR},
+      phone = #{phone,jdbcType=NVARCHAR},
+      address = #{address,jdbcType=NVARCHAR},
+      enabled = #{enabled,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

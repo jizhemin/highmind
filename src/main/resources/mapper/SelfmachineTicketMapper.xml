@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.SelfMachineTicketMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.SelfMacheineTicket">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="machine_id" jdbcType="BIGINT" property="machine_id" />
+    <result column="ticket_id" jdbcType="BIGINT" property="ticket_id" />
+    <result column="image" jdbcType="NVARCHAR" property="image" />
+  </resultMap>
+  <sql id="Base_Column_List">
+     DYNA_Equ_SelfMachine_Ticket.id, DYNA_Equ_SelfMachine_Ticket.domainid, DYNA_Equ_SelfMachine_Ticket.machine_id, DYNA_Equ_SelfMachine_Ticket.ticket_id, DYNA_Equ_SelfMachine_Ticket.image
+  </sql>
+
+  <insert id="addTicket" parameterType="com.highmind_Tms.entity.SelfMacheineTicket">
+  insert into DYNA_Equ_SelfMachine_Ticket
+  (domainid, machine_id, ticket_id,image)
+  values(#{domainid,jdbcType=INTEGER},#{agency_id,jdbcType=BIGINT},#{empolyee_id,jdbcType=BIGINT},#{image,jdbcType=NVARCHAR })
+
+  </insert>
+  <update id="updateById" parameterType="com.highmind_Tms.entity.SelfMacheineTicket">
+    update DYNA_Equ_SelfMachine_Ticket
+    set
+      <if test="enabled == true ">
+        enabled = #{false },
+      </if>
+      <if test="enabled == flase ">
+      enabled = #{true },
+      </if>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

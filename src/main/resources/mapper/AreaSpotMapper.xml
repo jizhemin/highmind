@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.AreaSpotMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.AreaSpot">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="spot_id" jdbcType="BIGINT" property="spot_id" />
+    <result column="area_id" jdbcType="BIGINT" property="area_id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, domainid, spot_id, area_id
+  </sql>
+  <select id="selectAreaSpot" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Area_Spot
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Area_Spot
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Area_Spot
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByAid" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Area_Spot
+    where area_id = #{aId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.AreaSpot" useGeneratedKeys="true">
+    insert into DYNA_Tms_Area_Spot (domainid, spot_id, area_id
+      )
+    values (#{domainid,jdbcType=INTEGER}, #{spot_id,jdbcType=BIGINT}, #{area_id,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.AreaSpot" useGeneratedKeys="true">
+    insert into DYNA_Tms_Area_Spot
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="spot_id != null">
+        spot_id,
+      </if>
+      <if test="area_id != null">
+        area_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="spot_id != null">
+        #{spot_id,jdbcType=BIGINT},
+      </if>
+      <if test="area_id != null">
+        #{area_id,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.AreaSpot">
+    update DYNA_Tms_Area_Spot
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="spot_id != null">
+        spot_id = #{spot_id,jdbcType=BIGINT},
+      </if>
+      <if test="area_id != null">
+        area_id = #{area_id,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.AreaSpot">
+    update DYNA_Tms_Area_Spot
+    set domainid = #{domainid,jdbcType=INTEGER},
+      spot_id = #{spot_id,jdbcType=BIGINT},
+      area_id = #{area_id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

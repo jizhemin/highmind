@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.AgencyTicketMapper">
+  <resultMap id="ResultMap" type="com.highmind_Tms.entity.AgencyTicket">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="agency_id" jdbcType="BIGINT" property="agency_id" />
+    <result column="ticket_id" jdbcType="BIGINT" property="ticket_id" />
+    <result column="srcprice" jdbcType="DECIMAL" property="srcprice" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <collection property="ticket" ofType="com.highmind_Tms.entity.Ticket">
+      <id column="ticket_id" jdbcType="BIGINT" property="id" />
+      <result column="ticketcode" jdbcType="NVARCHAR" property="ticketcode" />
+      <result column="ticketname" jdbcType="NVARCHAR" property="ticketname" />
+      <result column="ticketprice" jdbcType="NVARCHAR" property="ticketprice" />
+
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, domainid, agency_id, ticket_id, srcprice, price, enabled
+  </sql>
+  <select id="selectAgencyTicket" parameterType="Map" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Agency_Ticket
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Agency_Ticket
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Agency_Ticket
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.AgencyTicket" useGeneratedKeys="true">
+    insert into DYNA_Tms_Agency_Ticket (domainid, agency_id, ticket_id, 
+      srcprice, price, enabled
+      )
+    values (#{domainid,jdbcType=INTEGER}, #{agency_id,jdbcType=BIGINT}, #{ticket_id,jdbcType=BIGINT}, 
+      #{srcprice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{enabled,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.AgencyTicket" useGeneratedKeys="true">
+    insert into DYNA_Tms_Agency_Ticket
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="agency_id != null">
+        agency_id,
+      </if>
+      <if test="ticket_id != null">
+        ticket_id,
+      </if>
+      <if test="srcprice != null">
+        srcprice,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="agency_id != null">
+        #{agency_id,jdbcType=BIGINT},
+      </if>
+      <if test="ticket_id != null">
+        #{ticket_id,jdbcType=BIGINT},
+      </if>
+      <if test="srcprice != null">
+        #{srcprice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.AgencyTicket">
+    update DYNA_Tms_Agency_Ticket
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="agency_id != null">
+        agency_id = #{agency_id,jdbcType=BIGINT},
+      </if>
+      <if test="ticket_id != null">
+        ticket_id = #{ticket_id,jdbcType=BIGINT},
+      </if>
+      <if test="srcprice != null">
+        srcprice = #{srcprice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateById" parameterType="com.highmind_Tms.entity.AgencyTicket">
+    update DYNA_Tms_Agency_Ticket
+    set
+      price = #{price,jdbcType=DECIMAL},
+      enabled = #{enabled,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="addticket" parameterType="com.highmind_Tms.entity.AgencyTicket">
+  insert into DYNA_Tms_Agency_Ticket
+  (domainid, agency_id, ticket_id,srcprice,price,enabled)
+  values(#{domainid,jdbcType=INTEGER},#{agency_id,jdbcType=BIGINT},#{ticket_id,jdbcType=BIGINT},#{srcprice,jdbcType=BIGINT},#{price,jdbcType=BIGINT},#{enalbled,jdbcType=BIT})
+
+  </insert>
+
+  <select id="agencyticketlist" resultMap="ResultMap">
+    select a.id,a.domainid,a.agency_id,a.ticket_id,a.price,a.enabled,t.id,t.ticketcode,t.ticketname,t.ticketprice
+    from DYNA_Tms_Ticket t join DYNA_Tms_Agency_Ticket a
+    on t.id = a.ticket_id
+  </select>
+</mapper>

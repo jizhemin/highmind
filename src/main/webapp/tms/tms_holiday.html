@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+<!-- CSS -->
+<link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://unpkg.com/element-ui@2.8.2/lib/theme-chalk/index.css">
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+<link rel="stylesheet" href="../resource/table/css/demo_table.css">
+<link rel="stylesheet" href="../resource/css/bootstrap-fileupload.css">
+<link rel="stylesheet" href="../resource/css/main.css">
+<link rel="stylesheet" href="../resource/css/public.css">
+
+<title>票务基础资料管理</title>
+
+<style type="text/css">
+.is-selected {
+	color: #1989FA;
+}
+
+.el-tag {
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.panel-body::-webkit-scrollbar {
+	display:none
+}
+
+input[type=file]{
+	display:none;
+}
+
+
+</style>
+
+
+
+
+</head>
+<body>
+	<div id="holidayVm">
+		<div id="wrapper">
+
+			<!-- NAVBAR -->
+			<div class="navHeader"></div>
+			<!-- END NAVBAR -->
+
+			<!-- MAIN -->
+			<div class="main">
+				<div class="main-content">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-3">
+								<div class="panel">
+									<div class="panel-heading">
+										<h3 class="panel-title">节假日信息查看</h3>
+									</div>
+									<div class="panel-body" style="max-height:732px;overflow-x: hidden;overflow-y: scroll;" >
+										<el-tabs tab-position="top" id="getHoliday" > 
+											 <el-tab-pane v-for="site in holidayList" :label="site.label">	
+											 	<div v-for="holidays in site.holidays">
+											 		<el-divider>{{holidays.name}}</el-divider>
+											 		<span class="el-tag el-tag--info" v-for="date in holidays.dates">{{date}}</span>
+											 	</div>
+											 </el-tab-pane>	
+										</el-tabs>											 
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-9">
+
+								<div class="panel">
+									<div class="panel-heading">
+										<h3 class="panel-title">节假日信息编辑</h3>
+									</div>
+									<div class="panel-body">
+										<p>
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#holidayImport">
+												<i class="fa fa-user-plus"></i>&nbsp;导入节假日
+											</button>
+										</p>
+										<div class="row">
+											<div class="col-md-4">
+
+
+												<el-card class="box-card" shadow="hover">
+												<div slot="header" class="clearfix">
+													<span>节假日列表</span>
+													<el-button style="float: right; padding: 3px 0" type="text" id="holidayDelBtn">&nbsp;删除&nbsp;</el-button>
+													<el-button style="float: right; padding: 3px 0" type="text" @click="holidayCreateInit">&nbsp;添加&nbsp;</el-button>
+												</div>
+												<el-tag :key="tag" v-for="tag in dynamicTags" closable
+													:disable-transitions="false" @close="handleClose(tag)">
+												{{tag}} </el-tag> </el-card>
+
+
+											</div>
+											<div class="col-md-8">
+												<el-calendar > <template
+													slot="dateCell" slot-scope="{date, data}" >
+												<div :class="data.isSelected ? 'is-selected' : ''" v-on:click="dateSelect(data.day)" style="height:100%;width:100%">{{
+													data.day.split('-').slice(1).join('-') }} {{
+													data.isSelected ? '✔️' : ''}}</div>
+												</template> </el-calendar>											
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END MAIN -->
+		</div>
+
+		<!-- Modal -->
+
+		<!-- 节假日导入 -->
+		<div class="modal fade " id="holidayImport" tabindex="-1"
+			role="dialog" aria-labelledby="ticketInfoLabel" aria-hidden="true"
+			style="display: none;">
+			<div class="modal-dialog" role="document">
+				<div class="panel">
+					<div class="panel-heading">
+						<h3 class="panel-title">节假日信息导入</h3>
+						<div class="right">
+							<button type="button" class="btn-remove" data-dismiss="modal"
+								aria-hidden="true">
+								<i class="lnr lnr-cross"></i>
+							</button>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="form-horizontal tasi-form">
+							<br>
+							<div class="form-group">
+							
+								<div class="row">
+									<label class="col-sm-3 control-label">请选择文件</label>
+									<div class="col-md-7">
+										<div class="input-group">
+											<input class="form-control" type="text" readonly id="holidayFileVal">
+											<span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$('#holidayFile').click()"><i class="fa fa-file-o"></i></button></span>
+										</div>
+										
+									</div>
+								</div>	
+								<input type="file" class="form-control" id="holidayFile" onchange="holidayFileChoose(this.files[0])">					
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer" style="text-align: right;">						
+						<button class="btn btn-info" type="button" id="downloadBtn">下载模板</button>
+						<button data-dismiss="modal" class="btn btn-success" type="button" id="uploadBtn">确认导入</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 节假日导入 -->
+		<div class="modal fade " id="holidayCreate" tabindex="-1"
+			role="dialog" aria-labelledby="holidayCreateLabel" aria-hidden="true"
+			style="display: none;">
+			<div class="modal-dialog" role="document">
+				<div class="panel">
+					<div class="panel-heading">
+						<h3 class="panel-title">添加节假日</h3>
+						<div class="right">
+							<button type="button" class="btn-remove" data-dismiss="modal"
+								aria-hidden="true">
+								<i class="lnr lnr-cross"></i>
+							</button>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="form-horizontal tasi-form">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">节假日名称</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="请输入节假日名称（选填）" name="holidayname" >
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">备注</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" placeholder="请输入备注信息（选填）" rows="4" name="remark"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">所选日期</label>
+								<div class="col-sm-9">
+									<el-tag :key="tag" v-for="tag in dynamicTags" closable
+										:disable-transitions="false" @close="handleClose(tag)">
+									{{tag}} </el-tag> 
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<div class="panel-footer" style="text-align: right;">
+						<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+						<button data-dismiss="modal" class="btn btn-success" type="button"
+							id="holidayCreateBtn">确认添加</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+
+		<!-- End Modal -->
+
+	</div>
+
+	<!-- Javascript -->
+	<script src="../resource/js/jquery-3.2.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!-- 开发环境版本  -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+	<!-- 生产环境版本 -->
+	<script src="https://unpkg.com/element-ui@2.8.2/lib/index.js"></script>
+	<script src="../resource/js/jquery.dataTables.min.js"></script>
+	<script src="../resource/js/bootstrap-fileupload.js"></script>
+	<script src="../resource/js/public.js"></script>
+	<script src="../js/holiday.js?v=12"></script>
+</body>
+</html>

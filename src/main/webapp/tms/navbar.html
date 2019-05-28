@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>票务基础资料管理</title>
+</head>
+<body>
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="brand">
+				<a href=""><img src="../resource/img/logo.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+			</div>
+			<div class="container-fluid">
+				<div class="navbar-btn">
+					<button type="button" class="btn-toggle-fullwidth" id="menubtn"><i class="lnr lnr-arrow-left-circle"></i></button> 
+				</div>
+				<div class="navbar-menu">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="fa fa-user-circle-o"></i>&nbsp;
+								<span id="userName"></span> 
+								<i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu">
+								<li ><a data-toggle="modal" data-target="#passwordEdit">
+									<i class="lnr lnr-cog"></i> <span>修改密码</span></a>
+								</li>
+								<li><a onclick="loginOut()"><i class="lnr lnr-exit"></i> <span>注销</span></a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>	
+		</nav>
+		<!-- END NAVBAR -->
+		
+		<!-- SIDEBAR -->
+		<aside id="sidebar-nav" class="sidebar">
+			<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 95%;">
+				<div class="sidebar-scroll" style="overflow: hidden; width: auto; height: 95%;">
+					<nav>
+						<ul class="nav" id="sideNavbar">							
+							<li>
+								<a href="#employeeManage" data-toggle="collapse" class="collapsed " aria-expanded="false"><i class="lnr lnr-link"></i> <span>售票员管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+								<div id="employeeManage" class="collapse" aria-expanded="false" style="height: 0px;">
+									<ul class="nav">
+										<li><a href="sys_employee.html" class="">售票员票类配置</a></li>
+										<li><a href="sys_employeeSet.html" class="">售票员打印设置</a></li>
+									</ul>
+								</div>
+							</li>						
+							<li>
+								<a href="#spotPages" data-toggle="collapse" class="collapsed" aria-expanded="false"><i class="lnr lnr-link"></i> <span>景点管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+								<div id="spotPages" class="collapse" aria-expanded="false" style="height: 0px;">
+									<ul class="nav">
+										<li><a href="tms_spot.html" class="">景点信息管理</a></li>
+										<li><a href="tms_area.html" class="">区域景点管理</a></li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<a href="#ticketPages" data-toggle="collapse" class="collapsed" aria-expanded="false"><i class="lnr lnr-link"></i> <span>票务管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+								<div id="ticketPages" class="collapse" aria-expanded="false" style="height: 0px;">
+									<ul class="nav">
+										<li><a href="tms_ticketType.html" class="">票种信息管理</a></li>
+										<li><a href="tms_ticket.html" class="">票类信息管理</a></li>
+										<li><a href="tms_ticketStock.html" class="">库存信息管理</a></li>
+									</ul>
+								</div>
+							</li>
+							<li><a href="tms_agency.html" class=""><i class="lnr lnr-link"></i> <span>旅行社管理</span></a></li>
+							<li><a href="tms_holiday.html" class=""><i class="lnr lnr-link"></i> <span>节假日管理</span></a></li>
+						</ul>
+					</nav>				
+				</div>
+			</div>
+		</aside>
+		<!-- END SIDEBAR -->
+		
+		<!-- Modal -->
+		<!-- 修改密码 -->
+	    <div class="modal fade " id="passwordEdit" tabindex="-1" role="dialog" aria-labelledby="passwordEditLabel" aria-hidden="true" style="display: none;">
+	        <div class="modal-dialog" role="document">
+	            <div class="panel">
+					<div class="panel-heading">
+						<h3 class="panel-title">修改密码</h3>
+						<div class="right">
+							<button type="button" class="btn-remove" data-dismiss="modal" aria-hidden="true"><i class="lnr lnr-cross"></i></button>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="form-horizontal tasi-form">
+	                    	<div class="form-group">
+	                            <label class="col-sm-3 control-label">登录账号</label>
+	                            <div class="col-sm-9">
+	                            	<h5 id="userLoginId"></h5>	                               
+	                            </div>
+	                        </div>
+	                        <div class="form-group">
+								<label class="col-sm-3 control-label">原登录密码</label>
+								<div class="col-sm-9">
+									<input type="text" onfocus="this.type='password'"
+										class="form-control" placeholder="请输入原登录密码"
+										name="psdEdit">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">新登录密码</label>
+								<div class="col-sm-9">
+									<input type="text" onfocus="this.type='password'"
+										class="form-control" placeholder="请输入新登录密码"
+										name="psdNewEdit">
+								</div>
+							</div>
+	                    </div>					
+					</div>
+					<div class="panel-footer" style="text-align:right;">
+						<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+	                   	<button class="btn btn-success" type="button" id="editPassowordBtn">保存修改</button>
+					</div>
+				</div>
+	        </div>
+	    </div>
+    	<!-- END Modal -->
+		
+		
+		
+		<!-- Javascript -->
+		<script src="../resource/js/jquery-3.2.1.js"></script>
+		<script src="../resource/js/bootstrap.min.js"></script>
+		<script src="../js/navbar.js?v=1"></script>
+</body>
+</html>
+
+
+
+
+

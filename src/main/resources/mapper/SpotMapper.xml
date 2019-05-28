@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.SpotMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.Spot">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="spotname" jdbcType="NVARCHAR" property="spotname" />
+    <result column="spotremark" jdbcType="NVARCHAR" property="spotremark" />
+    <result column="limited" jdbcType="BIT" property="limited" />
+    <result column="qty" jdbcType="INTEGER" property="qty" />
+    <result column="autoleavetime" jdbcType="INTEGER" property="autoleavetime" />
+    <result column="autoleave" jdbcType="BINARY" property="autoleave" />
+    <collection property="passages" ofType="com.highmind_Tms.entity.Passage">
+    	<id column="Pid" jdbcType="BIGINT" property="id" />
+    	<result column="Pdomainid" jdbcType="INTEGER" property="domainid" />
+    	<result column="Pspot_id" jdbcType="BIGINT" property="spot_id" />
+    	<result column="Ppassagecode" jdbcType="NVARCHAR" property="passagecode" />
+    	<result column="Ppassagename" jdbcType="NVARCHAR" property="passagename" />
+    	<result column="Pip" jdbcType="NVARCHAR" property="ip" />
+    	<result column="Pio" jdbcType="SMALLINT" property="io" />
+    	<result column="Penabled" jdbcType="BIT" property="enabled" />
+    	<result column="Ppassagetype" jdbcType="NVARCHAR" property="passagetype" />
+    	<result column="Pemployee_id" jdbcType="BIGINT" property="employee_id" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    DYNA_Tms_Spot.id, DYNA_Tms_Spot.domainid, DYNA_Tms_Spot.spotname, DYNA_Tms_Spot.spotremark, DYNA_Tms_Spot.limited, DYNA_Tms_Spot.qty, DYNA_Tms_Spot.autoleavetime, DYNA_Tms_Spot.autoleave
+  </sql>
+  <sql id="Passage_Column_List">
+    DYNA_Equ_Passage.id as Pid, DYNA_Equ_Passage.domainid as Pdomainid,
+    DYNA_Equ_Passage.spot_id as Pspot_id, DYNA_Equ_Passage.passagecode as Ppassagecode,
+    DYNA_Equ_Passage.passagename as Ppassagename, DYNA_Equ_Passage.ip as Pip,
+    DYNA_Equ_Passage.io as Pio,DYNA_Equ_Passage.enabled as Penabled,
+    DYNA_Equ_Passage.passagetype as Ppassagetype,DYNA_Equ_Passage.employee_id as Pemployee_id
+  </sql>
+  <select id="selectSpot" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Passage_Column_List"/>
+    from DYNA_Tms_Spot
+    Left join DYNA_Equ_Passage 
+    on DYNA_Equ_Passage.spot_id=DYNA_Tms_Spot.id
+    <where>
+    	<if test="id!=null">
+    		DYNA_Tms_Spot.id=#{id}
+    	</if>
+    	<if test="domainId!=null">
+    		DYNA_Tms_Spot.domainId=#{domainId,jdbcType=BIGINT}
+    	</if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Spot
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Spot
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Spot" useGeneratedKeys="true">
+    insert into DYNA_Tms_Spot (domainid, spotname, spotremark, 
+      limited, qty, autoleavetime, 
+      autoleave)
+    values (#{domainid,jdbcType=INTEGER}, #{spotname,jdbcType=NVARCHAR}, #{spotremark,jdbcType=NVARCHAR}, 
+      #{limited,jdbcType=BIT}, #{qty,jdbcType=INTEGER}, #{autoleavetime,jdbcType=INTEGER}, 
+      #{autoleave,jdbcType=BINARY})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Spot" useGeneratedKeys="true">
+    insert into DYNA_Tms_Spot
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="spotname != null">
+        spotname,
+      </if>
+      <if test="spotremark != null">
+        spotremark,
+      </if>
+      <if test="limited != null">
+        limited,
+      </if>
+      <if test="qty != null">
+        qty,
+      </if>
+      <if test="autoleavetime != null">
+        autoleavetime,
+      </if>
+      <if test="autoleave != null">
+        autoleave,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="spotname != null">
+        #{spotname,jdbcType=NVARCHAR},
+      </if>
+      <if test="spotremark != null">
+        #{spotremark,jdbcType=NVARCHAR},
+      </if>
+      <if test="limited != null">
+        #{limited,jdbcType=BIT},
+      </if>
+      <if test="qty != null">
+        #{qty,jdbcType=INTEGER},
+      </if>
+      <if test="autoleavetime != null">
+        #{autoleavetime,jdbcType=INTEGER},
+      </if>
+      <if test="autoleave != null">
+        #{autoleave,jdbcType=BINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.Spot">
+    update DYNA_Tms_Spot
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="spotname != null">
+        spotname = #{spotname,jdbcType=NVARCHAR},
+      </if>
+      <if test="spotremark != null">
+        spotremark = #{spotremark,jdbcType=NVARCHAR},
+      </if>
+      <if test="limited != null">
+        limited = #{limited,jdbcType=BIT},
+      </if>
+      <if test="qty != null">
+        qty = #{qty,jdbcType=INTEGER},
+      </if>
+      <if test="autoleavetime != null">
+        autoleavetime = #{autoleavetime,jdbcType=INTEGER},
+      </if>
+      <if test="autoleave != null">
+        autoleave = #{autoleave,jdbcType=BINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.Spot">
+    update DYNA_Tms_Spot
+    set domainid = #{domainid,jdbcType=INTEGER},
+      spotname = #{spotname,jdbcType=NVARCHAR},
+      spotremark = #{spotremark,jdbcType=NVARCHAR},
+      limited = #{limited,jdbcType=BIT},
+      qty = #{qty,jdbcType=INTEGER},
+      autoleavetime = #{autoleavetime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

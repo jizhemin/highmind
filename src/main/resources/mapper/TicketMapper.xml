@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.highmind_Tms.dao.TicketMapper">
+  <resultMap id="BaseResultMap" type="com.highmind_Tms.entity.Ticket">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domainid" jdbcType="INTEGER" property="domainid" />
+    <result column="type_id" jdbcType="BIGINT" property="type_id" />
+    <result column="area_id" jdbcType="BIGINT" property="area_id" />
+    <result column="ticketcode" jdbcType="NVARCHAR" property="ticketcode" />
+    <result column="ticketname" jdbcType="NVARCHAR" property="ticketname" />
+    <result column="ticketprice" jdbcType="DECIMAL" property="ticketprice" />
+    <result column="ticketclass" jdbcType="NVARCHAR" property="ticketclass" />
+    <result column="effectiveday" jdbcType="INTEGER" property="effectiveday" />
+    <result column="stime" jdbcType="TIME" property="stime" />
+    <result column="etime" jdbcType="TIME" property="etime" />
+    <result column="sdate" jdbcType="TIMESTAMP" property="sdate" />
+    <result column="edate" jdbcType="TIMESTAMP" property="edate" />
+    <result column="day" jdbcType="NVARCHAR" property="day" />
+    <result column="holiday" jdbcType="NVARCHAR" property="holiday" />
+    <result column="serial" jdbcType="INTEGER" property="serial" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="isstock" jdbcType="BIT" property="isstock" />
+    
+    <association property="ticketType" javaType="com.highmind_Tms.entity.TicketType">
+	    <id column="Tid" jdbcType="BIGINT" property="id" />
+	    <result column="Ttypename" jdbcType="NVARCHAR" property="typename" />
+	    <result column="Tequipvoice" jdbcType="NVARCHAR" property="equipvoice" />
+	    <result column="Tremark" jdbcType="NVARCHAR" property="remark" />
+    </association>
+    <association property="area" javaType="com.highmind_Tms.entity.Area">
+	    <id column="Aid" jdbcType="BIGINT" property="id" />
+    	<result column="Adomainid" jdbcType="INTEGER" property="domainid" />
+    	<result column="Aareaname" jdbcType="NVARCHAR" property="areaname" />
+    	<result column="Aarearemark" jdbcType="NVARCHAR" property="arearemark" />
+    	<result column="Aserial" jdbcType="INTEGER" property="serial" />
+    </association>
+    <association property="ticketStock" javaType="com.highmind_Tms.entity.TicketStock" select="com.highmind_Tms.dao.TicketStockMapper.selectByPrimaryKey" column="stock_id">
+    </association>
+    <collection property="spots" ofType="com.highmind_Tms.entity.Spot">
+    	<id column="Sid" jdbcType="BIGINT" property="id" />
+    	<result column="Sdomainid" jdbcType="INTEGER" property="domainid" />
+    	<result column="Sspotname" jdbcType="NVARCHAR" property="spotname" />
+    	<result column="Sspotremark" jdbcType="NVARCHAR" property="spotremark" />
+    	<result column="Slimited" jdbcType="BIT" property="limited" />
+    	<result column="Sqty" jdbcType="INTEGER" property="qty" />
+    	<result column="Sautoleavetime" jdbcType="INTEGER" property="autoleavetime" />
+    	<result column="Sautoleave" jdbcType="BIT" property="autoleave" />
+    </collection>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    DYNA_Tms_Ticket.id, DYNA_Tms_Ticket.domainid, DYNA_Tms_Ticket.type_id, DYNA_Tms_Ticket.area_id, 
+    DYNA_Tms_Ticket.ticketcode, DYNA_Tms_Ticket.ticketname, DYNA_Tms_Ticket.ticketprice, DYNA_Tms_Ticket.ticketclass, 
+    DYNA_Tms_Ticket.effectiveday, DYNA_Tms_Ticket.stime, DYNA_Tms_Ticket.etime, DYNA_Tms_Ticket.sdate, DYNA_Tms_Ticket.edate,
+    DYNA_Tms_Ticket.day, DYNA_Tms_Ticket.holiday, DYNA_Tms_Ticket.serial, DYNA_Tms_Ticket.enabled,
+    DYNA_Tms_Ticket.isstock,  DYNA_Tms_Ticket.stock_id
+  </sql>
+   <sql id="TicketType_Base_Column_List">
+    DYNA_Tms_TicketType.id as Tid, DYNA_Tms_TicketType.typename as Ttypename, DYNA_Tms_TicketType.equipvoice as Tequipvoice, DYNA_Tms_TicketType.remark as Tremark
+  </sql>
+  <sql id="Area_Base_Column_List">
+    DYNA_Tms_Area.id as Aid, DYNA_Tms_Area.domainid as Adomainid, DYNA_Tms_Area.areaname as Aareaname, DYNA_Tms_Area.arearemark  as Aarearemark, DYNA_Tms_Area.serial as Aserial
+  </sql>
+  <sql id="Spot_Base_Column_List">
+    DYNA_Tms_Spot.id as Sid, DYNA_Tms_Spot.domainid as Sdomainid, DYNA_Tms_Spot.spotname as Sspotname, DYNA_Tms_Spot.spotremark as Sspotremark, DYNA_Tms_Spot.limited as Slimited,
+    DYNA_Tms_Spot.qty as Sqty, DYNA_Tms_Spot.autoleavetime as Sautoleavetime, DYNA_Tms_Spot.autoleave as Sautoleave
+  </sql>
+  <select id="selectTicket" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Area_Base_Column_List"/>
+    ,
+    <include refid="Spot_Base_Column_List"/>
+    ,
+    <include refid="TicketType_Base_Column_List"/>
+    from DYNA_Tms_Ticket 
+    Left join DYNA_Tms_Area on DYNA_Tms_Ticket.area_id=DYNA_Tms_Area.id
+    Left join DYNA_Tms_Area_Spot on DYNA_Tms_Area_Spot.area_id=DYNA_Tms_Area.id
+    Left join DYNA_Tms_Spot on DYNA_Tms_Area_Spot.spot_id=DYNA_Tms_Spot.id
+    Left join DYNA_Tms_TicketType on DYNA_Tms_TicketType.id=DYNA_Tms_Ticket.type_id
+    <where>
+    	<if test="id!=null">
+    		DYNA_Tms_Ticket.id = #{id,jdbcType=BIGINT}
+    	</if>
+    	<if test="domainid!=nill">
+    		DYNA_Tms_Ticket.domainid = #{domainid,jdbcType=INTEGER}
+    	</if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from DYNA_Tms_Ticket
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from DYNA_Tms_Ticket
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Ticket" useGeneratedKeys="true">
+    insert into DYNA_Tms_Ticket (domainid, type_id, area_id, 
+      ticketcode, ticketname, ticketprice, 
+      ticketclass, effectiveday, stime, 
+      etime, sdate, edate, 
+      day, holiday, serial, 
+      enabled)
+    values (#{domainid,jdbcType=INTEGER}, #{type_id,jdbcType=BIGINT}, #{area_id,jdbcType=BIGINT}, 
+      #{ticketcode,jdbcType=NVARCHAR}, #{ticketname,jdbcType=NVARCHAR}, #{ticketprice,jdbcType=DECIMAL}, 
+      #{ticketclass,jdbcType=NVARCHAR}, #{effectiveday,jdbcType=INTEGER}, #{stime,jdbcType=TIME}, 
+      #{etime,jdbcType=TIME}, #{sdate,jdbcType=TIMESTAMP}, #{edate,jdbcType=TIMESTAMP}, 
+      #{day,jdbcType=NVARCHAR}, #{holiday,jdbcType=NVARCHAR}, #{serial,jdbcType=INTEGER}, 
+      #{enabled,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.highmind_Tms.entity.Ticket" useGeneratedKeys="true">
+    insert into DYNA_Tms_Ticket
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        domainid,
+      </if>
+      <if test="type_id != null">
+        type_id,
+      </if>
+      <if test="area_id != null">
+        area_id,
+      </if>
+      <if test="ticketcode != null">
+        ticketcode,
+      </if>
+      <if test="ticketname != null">
+        ticketname,
+      </if>
+      <if test="ticketprice != null">
+        ticketprice,
+      </if>
+      <if test="ticketclass != null">
+        ticketclass,
+      </if>
+      <if test="effectiveday != null">
+        effectiveday,
+      </if>
+      <if test="stime != null">
+        stime,
+      </if>
+      <if test="etime != null">
+        etime,
+      </if>
+      <if test="sdate != null">
+        sdate,
+      </if>
+      <if test="edate != null">
+        edate,
+      </if>
+      <if test="day != null">
+        day,
+      </if>
+      <if test="holiday != null">
+        holiday,
+      </if>
+      <if test="serial != null">
+        serial,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+      <if test="isstock != null">
+        isstock,
+      </if>
+      <if test="stock_id != null">
+        stock_id
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="domainid != null">
+        #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="type_id != null">
+        #{type_id,jdbcType=BIGINT},
+      </if>
+      <if test="area_id != null">
+        #{area_id,jdbcType=BIGINT},
+      </if>
+      <if test="ticketcode != null">
+        #{ticketcode,jdbcType=NVARCHAR},
+      </if>
+      <if test="ticketname != null">
+        #{ticketname,jdbcType=NVARCHAR},
+      </if>
+      <if test="ticketprice != null">
+        #{ticketprice,jdbcType=DECIMAL},
+      </if>
+      <if test="ticketclass != null">
+        #{ticketclass,jdbcType=NVARCHAR},
+      </if>
+      <if test="effectiveday != null">
+        #{effectiveday,jdbcType=INTEGER},
+      </if>
+      <if test="stime != null">
+        #{stime,jdbcType=TIME},
+      </if>
+      <if test="etime != null">
+        #{etime,jdbcType=TIME},
+      </if> 
+      <if test="sdate != null">
+        #{sdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edate != null">
+        #{edate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="day != null">
+        #{day,jdbcType=NVARCHAR},
+      </if>
+      <if test="holiday != null">
+        #{holiday,jdbcType=NVARCHAR},
+      </if>
+      <if test="serial != null">
+        #{serial,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="isstock != null">
+        #{isstock},
+      </if>
+      <if test="stock_id != null">
+        #{stock_id},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.highmind_Tms.entity.Ticket">
+    update DYNA_Tms_Ticket
+    <set>
+      <if test="domainid != null">
+        domainid = #{domainid,jdbcType=INTEGER},
+      </if>
+      <if test="type_id != null">
+        type_id = #{type_id,jdbcType=BIGINT},
+      </if>
+      <if test="area_id != null">
+        area_id = #{area_id,jdbcType=BIGINT},
+      </if>
+      <if test="ticketcode != null">
+        ticketcode = #{ticketcode,jdbcType=NVARCHAR},
+      </if>
+      <if test="ticketname != null">
+        ticketname = #{ticketname,jdbcType=NVARCHAR},
+      </if>
+      <if test="ticketprice != null">
+        ticketprice = #{ticketprice,jdbcType=DECIMAL},
+      </if>
+      <if test="ticketclass != null">
+        ticketclass = #{ticketclass,jdbcType=NVARCHAR},
+      </if>
+      <if test="effectiveday != null">
+        effectiveday = #{effectiveday,jdbcType=INTEGER},
+      </if>
+      <if test="stime != null">
+        stime = #{stime,jdbcType=TIME},
+      </if>
+      <if test="etime != null">
+        etime = #{etime,jdbcType=TIME},
+      </if>
+      <if test="sdate != null">
+        sdate = #{sdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edate != null">
+        edate = #{edate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="day != null">
+        day = #{day,jdbcType=NVARCHAR},
+      </if>
+      <if test="holiday != null">
+        holiday = #{holiday,jdbcType=NVARCHAR},
+      </if>
+      <if test="serial != null">
+        serial = #{serial,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="isstock != null">
+        isstock = #{isstock},
+      </if>
+      <if test="stock_id != null">
+        stock_id = #{stock_id},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.highmind_Tms.entity.Ticket">
+    update DYNA_Tms_Ticket
+    set domainid = #{domainid,jdbcType=INTEGER},
+      type_id = #{type_id,jdbcType=BIGINT},
+      area_id = #{area_id,jdbcType=BIGINT},
+      ticketcode = #{ticketcode,jdbcType=NVARCHAR},
+      ticketname = #{ticketname,jdbcType=NVARCHAR},
+      ticketprice = #{ticketprice,jdbcType=DECIMAL},
+      ticketclass = #{ticketclass,jdbcType=NVARCHAR},
+      effectiveday = #{effectiveday,jdbcType=INTEGER},
+      stime = #{stime,jdbcType=TIME},
+      etime = #{etime,jdbcType=TIME},
+      sdate = #{sdate,jdbcType=TIMESTAMP},
+      edate = #{edate,jdbcType=TIMESTAMP},
+      day = #{day,jdbcType=NVARCHAR},
+      holiday = #{holiday,jdbcType=NVARCHAR},
+      serial = #{serial,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
